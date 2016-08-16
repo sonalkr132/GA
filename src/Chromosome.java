@@ -4,13 +4,24 @@ public class Chromosome {
   public int size;
   public int[] genes;
 
-  Chromosome(int n, double[][] dist){
+  Chromosome(int n, int[][] dist){
     size = n;
     genes = new int[n];
     genes = find_random_tour(dist);
   }
   
-  private int[] find_random_tour(double[][] dist){
+ //Evaluates the total sum of distances between the genes/points of the chromosome
+ // @param dist 2D array of distance between all the points
+ public double evaluate(int[][] dist){
+   double sum = 0.0;
+   for(int i = 1; i < size; i++){
+     sum += dist[genes[i]][genes[i - 1]];
+     //System.out.println(dist[genes[i]][genes[i - 1]]);
+   }
+   return sum;
+ }
+  
+  private int[] find_random_tour(int[][] dist){
     int x = 1;
     Random rand = new Random();
     ArrayList<Integer> res = new ArrayList<Integer>();
@@ -40,7 +51,7 @@ public class Chromosome {
     return array;
   }
   
-  private ArrayList<Integer> find_connected_cities(ArrayList<Integer> res, double[][] dist, int idx){
+  private ArrayList<Integer> find_connected_cities(ArrayList<Integer> res, int[][] dist, int idx){
     ArrayList<Integer> available_nodes = new ArrayList<Integer>();
     for(int i = 0; i < size; i++)
       if(dist[idx][i] != -1 && !res.contains(i)) available_nodes.add(i);
