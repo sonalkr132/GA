@@ -1,4 +1,3 @@
-
 public class Main {
   public static void main(String[] args) {
     int NUMBER_OF_POINTS = 20;
@@ -11,7 +10,7 @@ public class Main {
     Cities c = p.cities;
     for(int i = 0; i < NUMBER_OF_POINTS; i++){
       for(int j = 0; j < NUMBER_OF_POINTS; j++){
-          System.out.print(c.dist[i][j] + "    ");
+          System.out.print(c.map[i][j] + "    ");
       }
       System.out.println();
     }
@@ -35,6 +34,16 @@ public class Main {
     
     System.out.println();
     System.out.println("Initial best score: " + p.best_score + "\n");
+    
+    for(int i = 0; i < 200; i++){
+      p.next_generation();
+      if(i % 10 == 0){
+        System.out.println("best score: " + p.best_score);
+        System.out.println("best chromosome:");
+        for(int j = 0; j < NUMBER_OF_POINTS; j++) System.out.print(p.alltime_best_chromosome.genes[j] + " ");
+        System.out.println("\n");
+      }
+    }
 
   }
 }
