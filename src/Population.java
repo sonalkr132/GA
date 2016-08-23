@@ -36,7 +36,7 @@ public class Population {
   // also set the best scores array, best_score and best chromosome for current generation
   public void initialize_population(){
     for(int i = 0; i < population_size; i++){
-      Chromosome chromosome = new Chromosome(points_size, cities.map);
+      Chromosome chromosome = new Chromosome(points_size);
       chromosomes[i] = chromosome;
     }
   
@@ -51,18 +51,19 @@ public class Population {
   }
   
   
-  // selection has elitism of 3.
+  // selection has elitism of 4.
   // It uses roulette wheel selection
   public void selection(){
     Chromosome[] parents = new Chromosome[population_size];
     parents[0] = current_best_chromosome;
     parents[1] = alltime_best_chromosome;
-    parents[2] = alltime_best_chromosome.mutate();
+    parents[2] = alltime_best_chromosome.inversion_mutation();
+    parents[3] = alltime_best_chromosome.swap_mutation();
 
     set_roulette();
 
     Random prang = new Random();
-    for(int i = 3; i < population_size; i++){
+    for(int i = 4; i < population_size; i++){
       parents[i] = chromosomes[spin_wheel(prang.nextDouble())];
     }
 
@@ -73,7 +74,7 @@ public class Population {
   // the alltime best chromosome and best score if required
   private void set_best_score(){
     for(int i = 0; i < population_size; i++){
-      scores[i] = chromosomes[i].evaluate();
+      scores[i] = chromosomes[i].evaluate(cities.map);
     }
 
     double current_best = scores[0];

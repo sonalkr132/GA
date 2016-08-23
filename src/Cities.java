@@ -4,6 +4,7 @@ public class Cities {
   public int[][] ary;
   public int[][] map;
   private int number_of_points;
+  private int MAX_DIST = 1000000;
   
   Cities(int num){
     number_of_points = num;
@@ -22,18 +23,21 @@ public class Cities {
           map[i][j] = rand_num;
           map[j][i] = rand_num;
         }
-        else map[i][j] = -1;
+        else{
+          map[i][j] = MAX_DIST;
+          map[j][i] = MAX_DIST;
+        }
       }
     }
   }
   
   // loads the fixed map of cities
   public void load_fixed_distances(){
-    map = new int[][]{ {-1, 26, -1, -1,  4},
-                       {26, -1,  3, 17, -1},
-                       {-1,  3, -1,  9, 21},
-                       {-1, 17,  9, -1,  7},
-                       { 4, -1, 21,  7, -1}
+    map = new int[][]{ {MAX_DIST,       26, MAX_DIST, MAX_DIST,       4},
+                       {      26, MAX_DIST,        3,       17, MAX_DIST},
+                       {MAX_DIST,        3, MAX_DIST,        9,       21},
+                       {MAX_DIST,       17,        9, MAX_DIST,        7},
+                       {       4, MAX_DIST,       21,        7, MAX_DIST}
                      };
   }
 }

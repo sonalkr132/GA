@@ -10,7 +10,7 @@ public class Main {
     Cities c = p.cities;
     for(int i = 0; i < NUMBER_OF_POINTS; i++){
       for(int j = 0; j < NUMBER_OF_POINTS; j++){
-          System.out.print(c.map[i][j] + "    ");
+          System.out.print(c.map[i][j] + "     ");
       }
       System.out.println();
     }
