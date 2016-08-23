@@ -1,6 +1,6 @@
 public class Main {
   public static void main(String[] args) {
-    int NUMBER_OF_POINTS = 20;
+    int NUMBER_OF_POINTS = 10;
     int POPULATION_SIZE = 30;
     Population p = new Population(NUMBER_OF_POINTS, POPULATION_SIZE); //number of points, population size
     //p.fixed_point_cities();

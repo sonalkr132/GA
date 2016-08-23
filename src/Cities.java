@@ -18,7 +18,7 @@ public class Cities {
     for(int i = 0; i < number_of_points; i++){
       for(int j = i; j < number_of_points; j++){
         if(Math.random() > 0.2 && i != j){
-          int rand_num = rand.nextInt(points_range + 1);
+          int rand_num = 1 + rand.nextInt(points_range + 1);
           map[i][j] = rand_num;
           map[j][i] = rand_num;
         }
