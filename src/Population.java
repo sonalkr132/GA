@@ -1,8 +1,10 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Population {
   public Chromosome[] chromosomes;
-  public int population_size, points_size;
+  public int population_size, cities_size;
   private double crossover_prob, mutation_prob;
   public double[] roulette;
   public double[] scores;
@@ -14,7 +16,7 @@ public class Population {
     population_size = _population_size;
     crossover_prob = 0.9;
     mutation_prob = 0.01;
-    points_size = _points_size;
+    cities_size = _points_size;
 
     scores = new double[population_size];
     chromosomes = new Chromosome[population_size];
@@ -22,13 +24,13 @@ public class Population {
   
   // loads 5x5 matrix of cities' map
   public void fixed_point_cities(){
-    cities = new Cities(points_size);
+    cities = new Cities(cities_size);
     cities.load_fixed_distances();
   }
   
   // Generates @points_size number of random cities in given range
   public void random_point_cities(int points_range){
-    cities = new Cities(points_size);
+    cities = new Cities(cities_size);
     cities.gen_random_cities(points_range);
   }
   
@@ -36,7 +38,7 @@ public class Population {
   // also set the best scores array, best_score and best chromosome for current generation
   public void initialize_population(){
     for(int i = 0; i < population_size; i++){
-      Chromosome chromosome = new Chromosome(points_size);
+      Chromosome chromosome = new Chromosome(cities_size);
       chromosomes[i] = chromosome;
     }
   
@@ -45,8 +47,8 @@ public class Population {
   
   public void next_generation(){
     selection();
-    //    crossover();
-    //    mutation();
+    crossover();
+    mutation();
     set_best_score();
   }
   
@@ -70,6 +72,76 @@ public class Population {
     chromosomes = parents;
   }
   
+  // Order 1 crossover
+  public void crossover(){
+    ArrayList<Integer> queue = new ArrayList<Integer>();
+    
+    for(int i=0; i< population_size; i++) {
+      if( Math.random() < crossover_prob ) {
+        queue.add(i);
+      }
+    }
+
+    Collections.shuffle(queue);
+    for(int i = 0, j = queue.size() -1 ; i < j; i += 2) {
+      do_crossover(queue.get(i), queue.get(i + 1));
+    }
+  }
+  
+  private void do_crossover(int x, int y){
+    Chromosome parent1 = chromosomes[x];
+    Chromosome parent2 = chromosomes[y];
+    
+    Random rand = new Random();
+    int m, n;
+    do {
+      m = rand.nextInt(cities_size - 2);
+      n = rand.nextInt(cities_size);
+    } while(m >= n);
+    
+    int[] c1 = new int[cities_size], c2 = new int[cities_size];
+    ArrayList<Integer> check_child1 = new ArrayList<Integer>();
+    ArrayList<Integer> check_child2 = new ArrayList<Integer>();
+    for(int i = m; i <= n; i++){
+      c2[i] = parent1.genes[1]; check_child2.add(c2[i]);
+      c1[i] = parent2.genes[i]; check_child1.add(c1[i]);
+    }
+    
+    int itr_c = n, itr_p = n;
+    while(c1.length != cities_size){
+      if(!check_child1.contains(new Integer(parent1.genes[itr_p]))){
+        c1[itr_c] = parent1.genes[itr_p];
+        itr_c = (itr_c + 1) % cities_size;
+      }
+      itr_p = (itr_p + 1) % cities_size;
+    }
+    
+    itr_c = n; itr_p = n;
+    while(c2.length != cities_size){
+      if(!check_child2.contains(new Integer(parent2.genes[itr_p]))){
+        c2[itr_c] = parent2.genes[itr_p];
+        itr_c = (itr_c + 1) % cities_size;
+      }
+      itr_p = (itr_p + 1) % cities_size;
+    }
+    
+    chromosomes[x] = new Chromosome(cities_size, c1);
+    chromosomes[y] = new Chromosome(cities_size, c2);
+  }
+  
+  public void mutation(){
+    for(int i = 0; i < population_size; i++) {
+      if(Math.random() < mutation_prob) {
+        if(Math.random() > 0.5) {
+          chromosomes[i] = chromosomes[i].swap_mutation();
+        } else {
+          chromosomes[i] = chromosomes[i].inversion_mutation();
+        }
+        i--;
+      }
+    }
+  }
+
   // evaluates the best score of current population and changes
   // the alltime best chromosome and best score if required
   private void set_best_score(){
