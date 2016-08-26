@@ -100,15 +100,22 @@ public class Population {
     } while(m >= n);
     
     int[] c1 = new int[cities_size], c2 = new int[cities_size];
+    
+    //check_child1 is the array list used for *contains*
     ArrayList<Integer> check_child1 = new ArrayList<Integer>();
     ArrayList<Integer> check_child2 = new ArrayList<Integer>();
+    //copy elements [m..n] from _parent1_ to _child2_ and _parent2_ to _child1_
     for(int i = m; i <= n; i++){
-      c2[i] = parent1.genes[1]; check_child2.add(c2[i]);
+      c2[i] = parent1.genes[i]; check_child2.add(c2[i]);
       c1[i] = parent2.genes[i]; check_child1.add(c1[i]);
     }
     
-    int itr_c = n, itr_p = n;
-    while(c1.length != cities_size){
+    //create iterators for child and parent genes
+    int itr_c = (n + 1) % cities_size, itr_p = (n + 1) % cities_size;
+    
+    //copy elements from parent1 to child1 in order
+    while(itr_c != m){
+      //allie of parent1 not in child1
       if(!check_child1.contains(new Integer(parent1.genes[itr_p]))){
         c1[itr_c] = parent1.genes[itr_p];
         itr_c = (itr_c + 1) % cities_size;
@@ -116,8 +123,9 @@ public class Population {
       itr_p = (itr_p + 1) % cities_size;
     }
     
-    itr_c = n; itr_p = n;
-    while(c2.length != cities_size){
+    itr_c = (n + 1) % cities_size; itr_p = (n + 1) % cities_size;
+    //copy elements from parent2 to child2 in order
+    while(itr_c != m){
       if(!check_child2.contains(new Integer(parent2.genes[itr_p]))){
         c2[itr_c] = parent2.genes[itr_p];
         itr_c = (itr_c + 1) % cities_size;

@@ -1,6 +1,6 @@
 public class Main {
   public static void main(String[] args) {
-    int NUMBER_OF_POINTS = 10;
+    int NUMBER_OF_POINTS = 15;
     int POPULATION_SIZE = 30;
     Population p = new Population(NUMBER_OF_POINTS, POPULATION_SIZE); //number of points, population size
     //p.fixed_point_cities();
@@ -37,6 +37,7 @@ public class Main {
     
     for(int i = 0; i < 200; i++){
       p.next_generation();
+         
       if(i % 10 == 0){
         System.out.println("best score: " + p.best_score);
         System.out.println("best chromosome:");
@@ -45,5 +46,13 @@ public class Main {
       }
     }
 
+    // See final population
+    for(int i = 0; i < POPULATION_SIZE; i++){
+      for(int j = 0; j < NUMBER_OF_POINTS; j++){
+        Chromosome ch = p.chromosomes[i];
+        System.out.print(ch.genes[j] + " ");
+      }
+      System.out.println();
+    }
   }
 }
