@@ -73,7 +73,7 @@ public class Population {
 
     Random prang = new Random();
     for(int i = 4; i < population_size; i++){
-      parents[i] = chromosomes[spin_wheel(prang.nextDouble())];
+      parents[i] = chromosomes[spin_wheel(prang.nextInt())];
     }
 
     chromosomes = parents;
@@ -201,11 +201,11 @@ public class Population {
     }
 
     roulette = new double[population_size];
-    for(int i = 0; i < population_size; i++) roulette[i] = fitness[i]/sum;
+    for(int i = 0; i < population_size; i++) roulette[i] = (fitness[i]/sum)*100;
     for(int i = 1; i < population_size; i++) roulette[i] += roulette[i - 1];
   }
 
-  private int spin_wheel(double random_number){
+  private int spin_wheel(int random_number){
     int i;
     for(i = 0; i < population_size; i++){
       if(random_number < roulette[i]) break; 
