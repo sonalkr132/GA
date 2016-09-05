@@ -34,6 +34,13 @@ public class Population {
     cities.gen_random_cities(points_range);
   }
   
+  // Loads cities data from tsplib file
+  public void tsplib_cities(String filename, String type){
+    cities = new Cities(cities_size);
+    if(type == "dist") cities.load_tsplib(filename);
+    else if(type == "points") cities.load_tsplib_points(filename);
+  }
+  
   // Intializes chromosomes with random chromosomes
   // also set the best scores array, best_score and best chromosome for current generation
   public void initialize_population(){
