@@ -2,6 +2,7 @@ public class Main {
   public static void main(String[] args) {
     int NUMBER_OF_POINTS = 32;
     int POPULATION_SIZE = 40;
+    int NUM_OF_ITR = 80000;
     Population p = new Population(NUMBER_OF_POINTS, POPULATION_SIZE); //number of points, population size
     //p.fixed_point_cities();
     //p.random_point_cities(20);
@@ -36,8 +37,7 @@ public class Main {
     System.out.println();
     System.out.println("Initial best score: " + p.best_score + "\n");
     
-    int num_of_itr = 80000;
-    for(int i = 0; i < num_of_itr; i++){
+    for(int i = 0; i < NUM_OF_ITR; i++){
       p.next_generation();
          
       if(i % 1000 == 0){
