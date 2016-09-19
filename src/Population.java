@@ -73,7 +73,7 @@ public class Population {
 
     Random prang = new Random();
     for(int i = 4; i < population_size; i++){
-      parents[i] = chromosomes[spin_wheel(prang.nextInt())];
+      parents[i] = chromosomes[spin_wheel(prang.nextInt(100))];
     }
 
     chromosomes = parents;

@@ -75,7 +75,7 @@ public class Cities {
       for (int i = 0; i < 7; i++) input.nextLine();
       
       for (int i = 0; i < number_of_points; i++){
-        input.nextInt(); //ski first number on each row
+        input.nextInt(); //skip first number on each row
         ary[i][0] = input.nextInt();
         ary[i][1] = input.nextInt();
       }
